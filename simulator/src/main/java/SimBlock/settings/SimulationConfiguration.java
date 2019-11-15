@@ -16,7 +16,7 @@
 package SimBlock.settings;
 
 public class SimulationConfiguration {
-	public static final int NUM_OF_NODES = 600;//600;//800;//6000;
+	public static final int NUM_OF_NODES = 300;//600;//800;//6000;
 
 	public static final String TABLE = "SimBlock.node.routingTable.BitcoinCoreTable";
 	public static final String ALGO = "SimBlock.node.consensusAlgo.SampleProofOfStake";
@@ -31,9 +31,9 @@ public class SimulationConfiguration {
 	public static final int AVERAGE_COINS = 4000;
 	public static final int STDEV_OF_COINS = 2000;
 
-	public static final double STAKING_REWARD = 0.01;
+	public static final double STAKING_REWARD = 0.001;
 
-	public static final int ENDBLOCKHEIGHT = 100;
+	public static final int ENDBLOCKHEIGHT = 18000;
 
 	// Unit: byte
 	public static final long BLOCKSIZE = 535000;//6110;//8000;//535000;//0.5MB

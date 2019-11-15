@@ -20,8 +20,10 @@ import static SimBlock.simulator.Network.*;
 import static SimBlock.simulator.Simulator.*;
 import static SimBlock.simulator.Timer.*;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -58,10 +60,20 @@ public class Main {
 	}
 
 	public static PrintWriter OUT_JSON_FILE;
+	public static PrintWriter OUT2_TEXT_FILE;
 	public static PrintWriter STATIC_JSON_FILE;
+	public static BufferedReader MININGPOWERS_TEXT_FILE;
+	//public static PrintWriter MININGPOWERS_TEXT_FILE;
+	public static BufferedReader COINS_TEXT_FILE;
+	//public static PrintWriter COINS_TEXT_FILE;
 	static {
 		try{
 			OUT_JSON_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./output.json")))));
+			OUT2_TEXT_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./output2.txt")))));
+			MININGPOWERS_TEXT_FILE = new BufferedReader(new FileReader(new File(OUT_FILE_URI.resolve("./miningpowers.txt"))));
+			//MININGPOWERS_TEXT_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./miningpowers.txt")))));
+			COINS_TEXT_FILE = new BufferedReader(new FileReader(new File(OUT_FILE_URI.resolve("./coins.txt"))));
+			//COINS_TEXT_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./coins.txt")))));
 		} catch (IOException e){
 			e.printStackTrace();
 		}
@@ -137,15 +149,18 @@ public class Main {
 		}
 		System.out.println(averageOrhansSize);
 
+        Map<Node,Integer> count = new HashMap<Node,Integer>();
 		try {
 			FileWriter fw = new FileWriter(new File(OUT_FILE_URI.resolve("./blockList.txt")), false);
             PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
 
             for(Block b:blockList){
     			if(!orphans.contains(b)){
-    				pw.println("OnChain : "+b.getHeight()+" : "+b);
+    				pw.println("OnChain : "+b.getHeight()+" : "+b+" : "+b.getDifficulty()+" : "+(b.getTime()-(b.getHeight()==0 ? 0 : b.getBlockWithHeight(b.getHeight()-1).getTime())));
+    				Integer c = count.get(b.getCreator()); 
+    				count.put(b.getCreator(), (c == null ? 0 : c) + 1);
     			}else{
-    				pw.println("Orphan : "+b.getHeight()+" : "+b);
+    				pw.println("Orphan : "+b.getHeight()+" : "+b+" : "+b.getDifficulty()+" : "+(b.getTime()-(b.getHeight()==0 ? 0 : b.getBlockWithHeight(b.getHeight()-1).getTime())));
     			}
             }
             pw.close();
@@ -153,6 +168,14 @@ public class Main {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+		
+		Block genesis = blockList.get(0).getBlockWithHeight(0);
+		Block current = getSimulatedNodes().get(0).getBlock();
+		for(Node node : getSimulatedNodes()) {
+			Integer c = count.get(node);
+			OUT2_TEXT_FILE.println(node.getNodeID()+" : "+genesis.getCoinage(node).getCoins()+" : "+current.getCoinage(node).getCoins()+" : "+(c == null ? 0 : c));
+		}
+		OUT2_TEXT_FILE.close();
 
 		OUT_JSON_FILE.print("{");
 		OUT_JSON_FILE.print(	"\"kind\":\"simulation-end\",");
@@ -204,13 +227,27 @@ public class Main {
 	}
 
 	public static int genMiningPower(){
-		double r = random.nextGaussian();
+		/*double r = random.nextGaussian();
 
-		return  Math.max((int)(r * STDEV_OF_MINING_POWER + AVERAGE_MINING_POWER),1);
+		return  Math.max((int)(r * STDEV_OF_MINING_POWER + AVERAGE_MINING_POWER),1);//*/
+		try {
+			return Integer.parseInt(MININGPOWERS_TEXT_FILE.readLine());
+		} catch (NumberFormatException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;//*/
 	}
 	public static Coinage genCoinage() {
-		double r = random.nextGaussian();
-		return new Coinage(Math.max((int)(r * STDEV_OF_COINS + AVERAGE_COINS),0),1);
+		/*double r = random.nextGaussian();
+		return new Coinage(Math.max((int)(r * STDEV_OF_COINS + AVERAGE_COINS),0),1);//*/
+		try {
+			return new Coinage(Long.parseLong(COINS_TEXT_FILE.readLine()),1);
+		} catch (NumberFormatException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;//*/
 	}
 	public static void constructNetworkWithAllNode(int numNodes){
 		//List<String> regions = new ArrayList<>(Arrays.asList("NORTH_AMERICA", "EUROPE", "SOUTH_AMERICA", "ASIA_PACIFIC", "JAPAN", "AUSTRALIA", "OTHER"));
@@ -224,10 +261,14 @@ public class Main {
 		Map<Node, Coinage> genesisCoinages = new HashMap<Node, Coinage>();
 		for(int id = 1; id <= numNodes; id++){
 			long miningPower = genMiningPower();
+			//MININGPOWERS_TEXT_FILE.println(miningPower);
+			//MININGPOWERS_TEXT_FILE.flush();
 			totalMiningPower += miningPower;
 			Node node = new Node(id,degreeList.get(id-1)+1,regionList.get(id-1), miningPower,TABLE,ALGO);
 			addNode(node);
 			Coinage coinage = genCoinage();
+			//COINS_TEXT_FILE.println(coinage.getCoinage());
+			//COINS_TEXT_FILE.flush();
 			totalCoinage += coinage.getCoinage();
 			genesisCoinages.put(node, coinage);
 

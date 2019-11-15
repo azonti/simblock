@@ -18,6 +18,7 @@ package SimBlock.node;
 import static SimBlock.simulator.Simulator.*;
 import static SimBlock.settings.SimulationConfiguration.*;
 import java.util.Map;
+import java.math.BigInteger;
 import java.util.HashMap;
 
 public class Block {
@@ -28,7 +29,7 @@ public class Block {
 	private String proofOfWhat;
 	private Map<Node, Coinage> coinages;
 	private long difficulty;
-	private long totalDifficulty;
+	private BigInteger totalDifficulty;
 	private Map<String, Long> nextDifficulties;
 	private int id;
 	private static int latestId = 0;
@@ -40,7 +41,7 @@ public class Block {
 		this.time = time;
 		this.proofOfWhat = proofOfWhat;
 		this.difficulty = difficulty;
-		this.totalDifficulty = difficulty + (parent == null ? 0 : parent.getTotalDifficulty());
+		this.totalDifficulty = BigInteger.valueOf(difficulty).add(parent == null ? BigInteger.ZERO : parent.getTotalDifficulty());
 		if (parent == null) {
 			this.nextDifficulties = genesisNextDifficulties;
 
@@ -77,7 +78,7 @@ public class Block {
 	public String getProofOfWhat(){return proofOfWhat;}
 	public Coinage getCoinage(Node node){return this.coinages.get(node);}
 	public long getDifficulty() {return this.difficulty;}
-	public long getTotalDifficulty() {return this.totalDifficulty;}
+	public BigInteger getTotalDifficulty() {return this.totalDifficulty;}
 	public long getNextDifficulty(String proofOfWhat) {return this.nextDifficulties.get(proofOfWhat);}
 	public int getId() {return this.id;}
 

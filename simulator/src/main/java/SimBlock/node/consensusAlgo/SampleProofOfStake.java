@@ -44,7 +44,7 @@ public class SampleProofOfStake extends AbstractConsensusAlgo {
 				receivedBlock.getDifficulty() >= receivedBlock.getBlockWithHeight(receivedBlock.getHeight()-1).getNextDifficulty("stake")
 			) && (
 				currentBlock == null ||
-				receivedBlock.getTotalDifficulty() > currentBlock.getTotalDifficulty()
+				receivedBlock.getTotalDifficulty().compareTo(currentBlock.getTotalDifficulty()) > 0
 			);
 	}
 }
