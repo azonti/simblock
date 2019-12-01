@@ -39,10 +39,10 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import SimBlock.node.Block;
-import SimBlock.node.Coinage;
+import SimBlock.block.Block;
+import SimBlock.block.SampleProofOfStakeBlock;
 import SimBlock.node.Node;
-import SimBlock.task.MiningTask;
+import SimBlock.task.AbstractMintingTask;
 
 public class Main {
 	public static Random random = new Random(10);
@@ -74,13 +74,6 @@ public class Main {
 			//MININGPOWERS_TEXT_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./miningpowers.txt")))));
 			COINS_TEXT_FILE = new BufferedReader(new FileReader(new File(OUT_FILE_URI.resolve("./coins.txt"))));
 			//COINS_TEXT_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./coins.txt")))));
-		} catch (IOException e){
-			e.printStackTrace();
-		}
-	}
-
-	static {
-		try{
 			STATIC_JSON_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./static.json")))));
 		} catch (IOException e){
 			e.printStackTrace();
@@ -101,8 +94,8 @@ public class Main {
 		int j=1;
 		while(getTask() != null){
 
-			if(getTask() instanceof MiningTask){
-				MiningTask task = (MiningTask) getTask();
+			if(getTask() instanceof AbstractMintingTask){
+				AbstractMintingTask task = (AbstractMintingTask) getTask();
 				if(task.getParent().getHeight() == j) j++;
 				if(j > ENDBLOCKHEIGHT){break;}
 				if(j%100==0 || j==2) writeGraph(j);
@@ -156,11 +149,11 @@ public class Main {
 
             for(Block b:blockList){
     			if(!orphans.contains(b)){
-    				pw.println("OnChain : "+b.getHeight()+" : "+b+" : "+b.getDifficulty()+" : "+(b.getTime()-(b.getHeight()==0 ? 0 : b.getBlockWithHeight(b.getHeight()-1).getTime())));
-    				Integer c = count.get(b.getCreator()); 
-    				count.put(b.getCreator(), (c == null ? 0 : c) + 1);
+    				pw.println("OnChain : "+b.getHeight()+" : "+b+" : "+((SampleProofOfStakeBlock)b).getDifficulty()+" : "+(b.getTime()-(b.getHeight()==0 ? 0 : b.getBlockWithHeight(b.getHeight()-1).getTime())));
+    				Integer c = count.get(b.getMinter()); 
+    				count.put(b.getMinter(), (c == null ? 0 : c) + 1);
     			}else{
-    				pw.println("Orphan : "+b.getHeight()+" : "+b+" : "+b.getDifficulty()+" : "+(b.getTime()-(b.getHeight()==0 ? 0 : b.getBlockWithHeight(b.getHeight()-1).getTime())));
+    				pw.println("Orphan : "+b.getHeight()+" : "+b+" : "+((SampleProofOfStakeBlock)b).getDifficulty()+" : "+(b.getTime()-(b.getHeight()==0 ? 0 : b.getBlockWithHeight(b.getHeight()-1).getTime())));
     			}
             }
             pw.close();
@@ -173,7 +166,7 @@ public class Main {
 		Block current = getSimulatedNodes().get(0).getBlock();
 		for(Node node : getSimulatedNodes()) {
 			Integer c = count.get(node);
-			OUT2_TEXT_FILE.println(node.getNodeID()+" : "+genesis.getCoinage(node).getCoins()+" : "+current.getCoinage(node).getCoins()+" : "+(c == null ? 0 : c));
+			OUT2_TEXT_FILE.println(node.getNodeID()+" : "+((SampleProofOfStakeBlock)genesis).getCoinage(node).getCoins()+" : "+((SampleProofOfStakeBlock)current).getCoinage(node).getCoins()+" : "+(c == null ? 0 : c));
 		}
 		OUT2_TEXT_FILE.close();
 
@@ -238,39 +231,19 @@ public class Main {
 		}
 		return 0;//*/
 	}
-	public static Coinage genCoinage() {
-		/*double r = random.nextGaussian();
-		return new Coinage(Math.max((int)(r * STDEV_OF_COINS + AVERAGE_COINS),0),1);//*/
-		try {
-			return new Coinage(Long.parseLong(COINS_TEXT_FILE.readLine()),1);
-		} catch (NumberFormatException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;//*/
-	}
 	public static void constructNetworkWithAllNode(int numNodes){
 		//List<String> regions = new ArrayList<>(Arrays.asList("NORTH_AMERICA", "EUROPE", "SOUTH_AMERICA", "ASIA_PACIFIC", "JAPAN", "AUSTRALIA", "OTHER"));
 		double[] regionDistribution = getRegionDistribution();
 		List<Integer> regionList  = makeRandomList(regionDistribution,false);
 		double[] degreeDistribution = getDegreeDistribution();
 		List<Integer> degreeList  = makeRandomList(degreeDistribution,true);
-
-		long totalMiningPower = 0;
-		long totalCoinage = 0;
-		Map<Node, Coinage> genesisCoinages = new HashMap<Node, Coinage>();
+		
 		for(int id = 1; id <= numNodes; id++){
 			long miningPower = genMiningPower();
 			//MININGPOWERS_TEXT_FILE.println(miningPower);
 			//MININGPOWERS_TEXT_FILE.flush();
-			totalMiningPower += miningPower;
 			Node node = new Node(id,degreeList.get(id-1)+1,regionList.get(id-1), miningPower,TABLE,ALGO);
 			addNode(node);
-			Coinage coinage = genCoinage();
-			//COINS_TEXT_FILE.println(coinage.getCoinage());
-			//COINS_TEXT_FILE.flush();
-			totalCoinage += coinage.getCoinage();
-			genesisCoinages.put(node, coinage);
 
 			OUT_JSON_FILE.print("{");
 			OUT_JSON_FILE.print(	"\"kind\":\"add-node\",");
@@ -287,12 +260,8 @@ public class Main {
 		for(Node node: getSimulatedNodes()){
 			node.joinNetwork();
 		}
-
-		Map<String, Long> genesisNextDifficulties = new HashMap<String, Long>();
-		genesisNextDifficulties.put("work", totalMiningPower * getTargetInterval());
-		genesisNextDifficulties.put("stake", (long)((double)totalCoinage * getTargetInterval() / 1000));
 		
-		getSimulatedNodes().get(0).genesisBlock(genesisNextDifficulties, genesisCoinages);
+		getSimulatedNodes().get(0).genesisBlock();
 	}
 
 	public static void writeGraph(int j){
