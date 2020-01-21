@@ -24,8 +24,8 @@ import static SimBlock.simulator.Main.*;
 import static SimBlock.simulator.Simulator.*;
 
 public class SampleProofOfStakeBlock extends Block {
-	private Map<Node, Coinage> coinages;
-	private static Map<Node, Coinage> genesisCoinages;
+	private Map<Node, UTXO> utxos;
+	private static Map<Node, UTXO> genesisUTXOs;
 	private BigInteger difficulty;
 	private BigInteger totalDifficulty;
 	private BigInteger nextDifficulty;
@@ -33,23 +33,23 @@ public class SampleProofOfStakeBlock extends Block {
 	public SampleProofOfStakeBlock(SampleProofOfStakeBlock parent, Node minter, long time, BigInteger difficulty) {
 		super(parent, minter, time);
 		
-		this.coinages = new HashMap<Node, Coinage>();
+		this.utxos = new HashMap<Node, UTXO>();
 		if (parent == null) {
 			for (Node node : getSimulatedNodes()) {
-				this.coinages.put(node, genesisCoinages.get(node).clone());
+				this.utxos.put(node, genesisUTXOs.get(node).clone());
 			}
 		} else {
 			for (Node node : getSimulatedNodes()) {
-				this.coinages.put(node, parent.getCoinage(node).clone());
-				this.coinages.get(node).increaseAge();
+				this.utxos.put(node, parent.getUTXO(node).clone());
+				this.utxos.get(node).increaseAge();
 			}
-			this.coinages.get(minter).reward(STAKING_REWARD);
-			this.coinages.get(minter).resetAge();
+			this.utxos.get(minter).reward(STAKING_REWARD);
+			this.utxos.get(minter).resetAge();
 		}
 		
 		BigInteger totalCoinage = BigInteger.ZERO;
 		for (Node node : getSimulatedNodes()) {
-			totalCoinage = totalCoinage.add(this.coinages.get(node).getCoinage());
+			totalCoinage = totalCoinage.add(this.utxos.get(node).getCoinage());
 		}
 		
 		this.difficulty = difficulty;
@@ -57,20 +57,20 @@ public class SampleProofOfStakeBlock extends Block {
 		this.nextDifficulty = totalCoinage.multiply(BigInteger.valueOf(getTargetInterval())).divide(BigInteger.valueOf(1000));
 	}
 	
-	public Coinage getCoinage(Node node) {return this.coinages.get(node);}
+	public UTXO getUTXO(Node node) {return this.utxos.get(node);}
 	public BigInteger getDifficulty() {return this.difficulty;}
 	public BigInteger getTotalDifficulty() {return this.totalDifficulty;}
 	public BigInteger getNextDifficulty() {return this.nextDifficulty;}
 	
-	private static Coinage genCoinage() {
+	private static UTXO genUTXO() {
 		double r = random.nextGaussian();
-		return new Coinage(BigInteger.valueOf(Math.max((int)(r * STDEV_OF_COINS + AVERAGE_COINS),0)),1);
+		return new UTXO(BigInteger.valueOf(Math.max((int)(r * STDEV_OF_UTXO_AMOUNT + AVERAGE_UTXO_AMOUNT),0)),1);
 	}
 
 	public static SampleProofOfStakeBlock genesisBlock(Node minter) {
-		genesisCoinages = new HashMap<Node, Coinage>();
+		genesisUTXOs = new HashMap<Node, UTXO>();
 		for(Node node : getSimulatedNodes()){
-			genesisCoinages.put(node, genCoinage());
+			genesisUTXOs.put(node, genUTXO());
 		}
 		return new SampleProofOfStakeBlock(null, minter, 0, BigInteger.ZERO);
 	}

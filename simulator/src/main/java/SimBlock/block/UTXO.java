@@ -18,28 +18,28 @@ package SimBlock.block;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-public class Coinage implements Cloneable {
-	private BigInteger coins;
+public class UTXO implements Cloneable {
+	private BigInteger amount;
 	private long age;
 
-	public Coinage(BigInteger coins, long age) {
-		this.coins = coins;
+	public UTXO(BigInteger amount, long age) {
+		this.amount = amount;
 		this.age = age;
 	}
 
-	public BigInteger getCoins() { return this.coins; }
+	public BigInteger getAmount() { return this.amount; }
 	public long getAge() { return this.age; }
 	public void increaseAge() { this.age++; }
 	public void resetAge() { this.age = 0; }
-	public void reward(double reward) { this.coins = this.coins.add(new BigDecimal(this.getCoinage()).multiply(new BigDecimal(reward)).toBigInteger()); }
+	public void reward(double reward) { this.amount = this.amount.add(new BigDecimal(this.getCoinage()).multiply(new BigDecimal(reward)).toBigInteger()); }
 	
-	public BigInteger getCoinage() { return this.getCoins().multiply(BigInteger.valueOf(this.getAge())); }
+	public BigInteger getCoinage() { return this.getAmount().multiply(BigInteger.valueOf(this.getAge())); }
 
 	@Override
-	public Coinage clone() {
-		Coinage ret = null;
+	public UTXO clone() {
+		UTXO ret = null;
 		try {
-			ret = (Coinage)super.clone();
+			ret = (UTXO)super.clone();
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}

@@ -28,8 +28,8 @@ public class SimulationConfiguration {
 	public static final int AVERAGE_MINING_POWER = 400000;
 	public static final int STDEV_OF_MINING_POWER = 100000;
 
-	public static final int AVERAGE_COINS = 4000;
-	public static final int STDEV_OF_COINS = 2000;
+	public static final int AVERAGE_UTXO_AMOUNT = 4000;
+	public static final int STDEV_OF_UTXO_AMOUNT = 2000;
 
 	public static final double STAKING_REWARD = 0.01;
 

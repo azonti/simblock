@@ -33,7 +33,7 @@ public class SampleProofOfStake extends AbstractConsensusAlgo {
 		Node selfNode = this.getSelfNode();
 		SampleProofOfStakeBlock parent = (SampleProofOfStakeBlock)selfNode.getBlock();
 		BigInteger difficulty = parent.getNextDifficulty();
-		double p = parent.getCoinage(selfNode).getCoinage().doubleValue() / difficulty.doubleValue();
+		double p = parent.getUTXO(selfNode).getCoinage().doubleValue() / difficulty.doubleValue();
 		double u = random.nextDouble();
 		return p <= Math.pow(2, -53) ? null : new SampleStakingTask(selfNode, (long)( Math.log(u) / Math.log(1.0-p) * 1000 ), difficulty);
 	}
