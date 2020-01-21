@@ -25,8 +25,8 @@ public class SimulationConfiguration {
 	public static final long INTERVAL = 1000*60*10;//1000*60;//1000*30*5;//1000*60*10;
 
 	// Mining power is the number of mining (hash calculation) executed per millisecond.
-	public static final int AVERAGE_MINING_POWER = 400000;
-	public static final int STDEV_OF_MINING_POWER = 100000;
+	public static final long AVERAGE_MINING_POWER = 400000;
+	public static final long STDEV_OF_MINING_POWER = 100000;
 
 	public static final int AVERAGE_UTXO_AMOUNT = 4000;
 	public static final int STDEV_OF_UTXO_AMOUNT = 2000;

@@ -193,10 +193,10 @@ public class Main {
 		return list;
 	}
 
-	public static int genMiningPower(){
+	public static long genMiningPower() {
 		double r = random.nextGaussian();
 
-		return  Math.max((int)(r * STDEV_OF_MINING_POWER + AVERAGE_MINING_POWER),1);
+		return Math.max((long)(r * STDEV_OF_MINING_POWER + AVERAGE_MINING_POWER),1);
 	}
 	public static void constructNetworkWithAllNode(int numNodes){
 		//List<String> regions = new ArrayList<>(Arrays.asList("NORTH_AMERICA", "EUROPE", "SOUTH_AMERICA", "ASIA_PACIFIC", "JAPAN", "AUSTRALIA", "OTHER"));
