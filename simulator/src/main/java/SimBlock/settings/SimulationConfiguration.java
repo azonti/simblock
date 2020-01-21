@@ -16,24 +16,32 @@
 package SimBlock.settings;
 
 public class SimulationConfiguration {
-	public static final int NUM_OF_NODES = 600;//600;//800;//6000;
+	public static final int NUM_OF_NODES = 1200;//600;//800;//6000;
 
 	public static final String TABLE = "SimBlock.node.routingTable.BitcoinCoreTable";
-	public static final String ALGO = "SimBlock.node.consensusAlgo.SampleProofOfStake";
+	public static final String ALGO = "SimBlock.node.consensusAlgo.ProofOfStake1_0Like";
 
 	// Unit: millisecond
-	public static final long INTERVAL = 1000*60*10;//1000*60;//1000*30*5;//1000*60*10;
+	public static final long INTERVAL = 1000*64;//1000*60;//1000*30*5;//1000*60*10;
 
 	// Mining power is the number of mining (hash calculation) executed per millisecond.
 	public static final long AVERAGE_MINING_POWER = 400000;
 	public static final long STDEV_OF_MINING_POWER = 100000;
 
-	public static final int AVERAGE_UTXO_AMOUNT = 4000;
-	public static final int STDEV_OF_UTXO_AMOUNT = 2000;
+	public static final long AVERAGE_UTXO_AMOUNT = 400000;
+	public static final long STDEV_OF_UTXO_AMOUNT = 200000;
 
-	public static final double STAKING_REWARD = 0.01;
+	public static final long COINDAYWEIGHT_INITIALIZED = 1000*60*60*8;
+	public static final long COINDAYWEIGHT_MAXIMIZED = 1000*60*60*24;
+	
+	public static final long AVERAGE_UTXO_AGE = (COINDAYWEIGHT_INITIALIZED+COINDAYWEIGHT_MAXIMIZED)/INTERVAL;
+	public static final long STDEV_OF_UTXO_AGE = (COINDAYWEIGHT_INITIALIZED+COINDAYWEIGHT_MAXIMIZED)/INTERVAL/2;
+	
+	public static final double STAKING_REWARD = (double)INTERVAL/(1000*60*60*24);
+	
+	public static final int DAA_BLOCKS = 2016;
 
-	public static final int ENDBLOCKHEIGHT = 100;
+	public static final long ENDBLOCKHEIGHT = 1000*60*60*24/INTERVAL;
 
 	// Unit: byte
 	public static final long BLOCKSIZE = 535000;//6110;//8000;//535000;//0.5MB

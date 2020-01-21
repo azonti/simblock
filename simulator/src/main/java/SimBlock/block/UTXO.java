@@ -15,6 +15,8 @@
  */
 package SimBlock.block;
 
+import static SimBlock.settings.SimulationConfiguration.*;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
@@ -31,9 +33,12 @@ public class UTXO implements Cloneable {
 	public long getAge() { return this.age; }
 	public void increaseAge() { this.age++; }
 	public void resetAge() { this.age = 0; }
-	public void reward(double reward) { this.amount = this.amount.add(new BigDecimal(this.getCoinage()).multiply(new BigDecimal(reward)).toBigInteger()); }
+	public void reward(double reward) { this.amount = this.amount.add(new BigDecimal(this.getCoinAge()).multiply(new BigDecimal(reward)).toBigInteger()); }
 	
-	public BigInteger getCoinage() { return this.getAmount().multiply(BigInteger.valueOf(this.getAge())); }
+	public BigInteger getCoinAge() { return this.getAmount().multiply(BigInteger.valueOf(this.getAge())); }
+	public BigInteger getCoinDayWeight() { return this.getAmount().multiply(BigInteger.valueOf(
+			Math.max(Math.min(this.getAge(), COINDAYWEIGHT_MAXIMIZED/INTERVAL) - COINDAYWEIGHT_INITIALIZED/INTERVAL, 0)
+			));	}
 
 	@Override
 	public UTXO clone() {

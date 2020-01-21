@@ -16,35 +16,35 @@
 package SimBlock.node.consensusAlgo;
 
 import SimBlock.block.Block;
-import SimBlock.block.SampleProofOfStakeBlock;
+import SimBlock.block.ProofOfStake1_0LikeBlock;
 import SimBlock.node.Node;
-import SimBlock.task.SampleStakingTask;
+import SimBlock.task.Staking1_0LikeTask;
 import static SimBlock.simulator.Main.*;
 
 import java.math.BigInteger;
 
-public class SampleProofOfStake extends AbstractConsensusAlgo {
-	public SampleProofOfStake(Node selfNode) {
+public class ProofOfStake1_0Like extends AbstractConsensusAlgo {
+	public ProofOfStake1_0Like(Node selfNode) {
 		super(selfNode);
 	}
 
 	@Override
-	public SampleStakingTask minting() {
+	public Staking1_0LikeTask minting() {
 		Node selfNode = this.getSelfNode();
-		SampleProofOfStakeBlock parent = (SampleProofOfStakeBlock)selfNode.getBlock();
+		ProofOfStake1_0LikeBlock parent = (ProofOfStake1_0LikeBlock)selfNode.getBlock();
 		BigInteger difficulty = parent.getNextDifficulty();
-		double p = parent.getUTXO(selfNode).getCoinage().doubleValue() / difficulty.doubleValue();
+		double p = parent.getUTXO(selfNode).getCoinDayWeight().doubleValue() / difficulty.doubleValue();
 		double u = random.nextDouble();
-		return p <= Math.pow(2, -53) ? null : new SampleStakingTask(selfNode, (long)( Math.log(u) / Math.log(1.0-p) * 1000 ), difficulty);
+		return p <= Math.pow(2, -53) ? null : new Staking1_0LikeTask(selfNode, (long)( Math.log(u) / Math.log(1.0-p) * 1000 ), difficulty);
 	}
 
 	@Override
 	public boolean isReceivedBlockValid(Block receivedBlock, Block currentBlock) {
-		if (!(receivedBlock instanceof SampleProofOfStakeBlock)) return false;
-		SampleProofOfStakeBlock _receivedBlock = (SampleProofOfStakeBlock)receivedBlock;
-		SampleProofOfStakeBlock _currentBlock = (SampleProofOfStakeBlock)currentBlock;
+		if (!(receivedBlock instanceof ProofOfStake1_0LikeBlock)) return false;
+		ProofOfStake1_0LikeBlock _receivedBlock = (ProofOfStake1_0LikeBlock)receivedBlock;
+		ProofOfStake1_0LikeBlock _currentBlock = (ProofOfStake1_0LikeBlock)currentBlock;
 		int receivedBlockHeight = receivedBlock.getHeight();
-		SampleProofOfStakeBlock receivedBlockParent = receivedBlockHeight == 0 ? null : (SampleProofOfStakeBlock)receivedBlock.getBlockWithHeight(receivedBlockHeight-1);
+		ProofOfStake1_0LikeBlock receivedBlockParent = receivedBlockHeight == 0 ? null : (ProofOfStake1_0LikeBlock)receivedBlock.getBlockWithHeight(receivedBlockHeight-1);
 
 		return (
 				receivedBlockHeight == 0 ||
@@ -56,7 +56,7 @@ public class SampleProofOfStake extends AbstractConsensusAlgo {
 	}
 
 	@Override
-	public SampleProofOfStakeBlock genesisBlock() {
-		return SampleProofOfStakeBlock.genesisBlock(this.getSelfNode());
+	public ProofOfStake1_0LikeBlock genesisBlock() {
+		return ProofOfStake1_0LikeBlock.genesisBlock(this.getSelfNode());
 	}
 }

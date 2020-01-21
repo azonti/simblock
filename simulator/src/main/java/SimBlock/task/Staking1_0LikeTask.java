@@ -15,23 +15,23 @@
  */
 package SimBlock.task;
 
-import SimBlock.block.SampleProofOfStakeBlock;
+import SimBlock.block.ProofOfStake1_0LikeBlock;
 import SimBlock.node.Node;
 import static SimBlock.simulator.Timer.*;
 
 import java.math.BigInteger;
 
-public class SampleStakingTask extends AbstractMintingTask {
+public class Staking1_0LikeTask extends AbstractMintingTask {
 	private BigInteger difficulty;
 	
-	public SampleStakingTask(Node minter, long interval, BigInteger difficulty) {
+	public Staking1_0LikeTask(Node minter, long interval, BigInteger difficulty) {
 		super(minter, interval);
 		this.difficulty = difficulty;
 	}
 
 	@Override
 	public void run() {
-		SampleProofOfStakeBlock createdBlock = new SampleProofOfStakeBlock((SampleProofOfStakeBlock)this.getParent(), this.getMinter(), getCurrentTime(), this.difficulty);
+		ProofOfStake1_0LikeBlock createdBlock = new ProofOfStake1_0LikeBlock((ProofOfStake1_0LikeBlock)this.getParent(), this.getMinter(), getCurrentTime(), this.difficulty);
 		this.getMinter().receiveBlock(createdBlock);
 	}
 }
