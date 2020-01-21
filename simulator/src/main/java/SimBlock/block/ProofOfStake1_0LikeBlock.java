@@ -15,6 +15,7 @@
  */
 package SimBlock.block;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,12 +64,15 @@ public class ProofOfStake1_0LikeBlock extends Block {
 	public BigInteger getNextDifficulty() {return this.nextDifficulty;}
 	
 	private static UTXO genUTXO() {
+		try{ return new UTXO(BigInteger.valueOf(Long.parseLong(AMOUNT_TEXT_FILE.readLine())),Long.parseLong(AGE_TEXT_FILE.readLine())); }catch(NumberFormatException | IOException e){e.printStackTrace();}return null;/*
 		double r = random.nextGaussian();
 		double s = random.nextGaussian();
+		AMOUNT_TEXT_FILE.println(Math.max((long)(r * STDEV_OF_UTXO_AMOUNT + AVERAGE_UTXO_AMOUNT),0));AMOUNT_TEXT_FILE.flush();
+		AGE_TEXT_FILE.println(Math.max((long)(r * STDEV_OF_UTXO_AGE + AVERAGE_UTXO_AGE),0));AGE_TEXT_FILE.flush();
 		return new UTXO(
 				BigInteger.valueOf(Math.max((long)(r * STDEV_OF_UTXO_AMOUNT + AVERAGE_UTXO_AMOUNT),0)),
 				Math.max((long)(s * STDEV_OF_UTXO_AGE + AVERAGE_UTXO_AGE),0)
-				);
+				);//*/
 	}
 
 	public static ProofOfStake1_0LikeBlock genesisBlock(Node minter) {

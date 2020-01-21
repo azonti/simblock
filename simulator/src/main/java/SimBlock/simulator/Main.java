@@ -20,8 +20,10 @@ import static SimBlock.simulator.Network.*;
 import static SimBlock.simulator.Simulator.*;
 import static SimBlock.simulator.Timer.*;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -30,12 +32,15 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
 import SimBlock.block.Block;
+import SimBlock.block.ProofOfStake1_0LikeBlock;
 import SimBlock.node.Node;
 import SimBlock.task.AbstractMintingTask;
 
@@ -55,10 +60,16 @@ public class Main {
 	}
 
 	public static PrintWriter OUT_JSON_FILE;
+	public static PrintWriter OUT2_TEXT_FILE;
 	public static PrintWriter STATIC_JSON_FILE;
+	//public static PrintWriter COINS_TEXT_FILE, AGE_TEXT_FILE;/*
+	public static BufferedReader AMOUNT_TEXT_FILE, AGE_TEXT_FILE;//*/
 	static {
 		try{
 			OUT_JSON_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./output.json")))));
+			OUT2_TEXT_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./output2.txt")))));
+			//AMOUNT_TEXT_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./amount.txt")))));AGE_TEXT_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./age.txt")))));/*
+			AMOUNT_TEXT_FILE = new BufferedReader(new FileReader(new File(OUT_FILE_URI.resolve("./amount.txt"))));AGE_TEXT_FILE = new BufferedReader(new FileReader(new File(OUT_FILE_URI.resolve("./age.txt"))));//*/
 			STATIC_JSON_FILE = new PrintWriter(new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./static.json")))));
 		} catch (IOException e){
 			e.printStackTrace();
@@ -127,15 +138,26 @@ public class Main {
 		}
 		System.out.println(averageOrhansSize);
 
+        Map<Node,Integer> count = new HashMap<Node,Integer>();
 		try {
 			FileWriter fw = new FileWriter(new File(OUT_FILE_URI.resolve("./blockList.txt")), false);
             PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
 
             for(Block b:blockList){
     			if(!orphans.contains(b)){
-    				pw.println("OnChain : "+b.getHeight()+" : "+b);
+    				pw.println("OnChain : "+
+    						b.getHeight()+" : "+
+    						b+" : "+
+    						((ProofOfStake1_0LikeBlock)b).getDifficulty()+" : "+
+    						(b.getHeight()==0 ? INTERVAL : b.getTime() - b.getBlockWithHeight(b.getHeight()-1).getTime()));
+    				Integer c = count.get(b.getMinter()); 
+    				count.put(b.getMinter(), (c == null ? 0 : c) + 1);
     			}else{
-    				pw.println("Orphan : "+b.getHeight()+" : "+b);
+    				pw.println("Orphan : "+
+    						b.getHeight()+" : "+
+    						b+" : "+
+    						((ProofOfStake1_0LikeBlock)b).getDifficulty()+" : "+
+    						(b.getHeight()==0 ? INTERVAL : b.getTime() - b.getBlockWithHeight(b.getHeight()-1).getTime()));
     			}
             }
             pw.close();
@@ -143,6 +165,17 @@ public class Main {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+		
+		Block genesis = blockList.get(0).getBlockWithHeight(0);
+		Block current = getSimulatedNodes().get(0).getBlock();
+		for(Node node : getSimulatedNodes()) {
+			Integer c = count.get(node);
+			OUT2_TEXT_FILE.println(node.getNodeID()+" : "+
+					((ProofOfStake1_0LikeBlock)genesis).getUTXO(node).getAmount()+" : "+
+					((ProofOfStake1_0LikeBlock)current).getUTXO(node).getAmount()+" : "+
+					(c == null ? 0 : c));
+		}
+		OUT2_TEXT_FILE.close();
 
 		OUT_JSON_FILE.print("{");
 		OUT_JSON_FILE.print(	"\"kind\":\"simulation-end\",");
