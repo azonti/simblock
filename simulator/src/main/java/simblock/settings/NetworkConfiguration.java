@@ -40,6 +40,7 @@ public class NetworkConfiguration {
    * LATENCY[i][j] is average latency from REGION_LIST[i] to REGION_LIST[j]
    * Unit: millisecond, for year 2015
    */
+  @SuppressWarnings("unused")
   private static final long[][] LATENCY_2015 = {
       {36, 119, 255, 310, 154, 208},
       {119, 12, 221, 242, 266, 350},
@@ -70,6 +71,7 @@ public class NetworkConfiguration {
    * List of download bandwidth assigned to each region, and last element is Inter-regional
    * bandwidth. (unit: bit per second) for year 2015
    */
+  @SuppressWarnings("unused")
   private static final long[] DOWNLOAD_BANDWIDTH_2015 = {
       25000000,   // North America
       24000000,   // Europe
@@ -103,6 +105,7 @@ public class NetworkConfiguration {
    * List of upload bandwidth assigned to each region. (unit: bit per second), and last element
    * is Inter-regional bandwidth for year 2015
    */
+  @SuppressWarnings("unused")
   private static final long[] UPLOAD_BANDWIDTH_2015 = {
       4700000,    // North America
       8100000,    // Europe
@@ -135,6 +138,7 @@ public class NetworkConfiguration {
   /**
    * Region distribution Bitcoin 2015.
    */
+  @SuppressWarnings("unused")
   private static final double[] REGION_DISTRIBUTION_BITCOIN_2015 = {
       0.3869, // North America
       0.5159, // Europe
@@ -160,6 +164,7 @@ public class NetworkConfiguration {
    * Region distribution Litecoin.
    */
   //TODO year
+  @SuppressWarnings("unused")
   private static final double[] REGION_DISTRIBUTION_LITECOIN = {
       0.3661, // North America
       0.4791, // Europe
@@ -173,6 +178,7 @@ public class NetworkConfiguration {
    * Region distribution Dogecoin.
    */
   //TODO year
+  @SuppressWarnings("unused")
   private static final double[] REGION_DISTRIBUTION_DOGECOIN = {
       0.3924, // North America
       0.4879, // Europe
@@ -200,6 +206,7 @@ public class NetworkConfiguration {
    * The cumulative distribution of number of outbound links for Litecoin.
    */
   //TODO year
+  @SuppressWarnings("unused")
   private static final double[] DEGREE_DISTRIBUTION_LITECOIN = {
       0.01, 0.02, 0.04, 0.07, 0.09, 0.14, 0.20, 0.28, 0.39, 0.5, //  1-10
       0.6,  0.69, 0.76, 0.81, 0.85, 0.87, 0.89, 0.92, 0.93, 1    // 11-20
@@ -208,6 +215,7 @@ public class NetworkConfiguration {
   /**
    * The cumulative distribution of number of outbound links for Dogecoin.
    */
+  @SuppressWarnings("unused")
   private static final double[] DEGREE_DISTRIBUTION_DOGECOIN = {
       0, 0, 0, 0, 0, 0, 0, 1, 1, 1, //  1-10
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1  // 11-20
