@@ -16,12 +16,12 @@
 
 package simblock.simulator;
 
-import static simblock.settings.NetworkConfiguration.DEGREE_DISTRIBUTION;
-import static simblock.settings.NetworkConfiguration.DOWNLOAD_BANDWIDTH;
-import static simblock.settings.NetworkConfiguration.LATENCY;
-import static simblock.settings.NetworkConfiguration.REGION_DISTRIBUTION;
 import static simblock.settings.NetworkConfiguration.REGION_LIST;
+import static simblock.settings.NetworkConfiguration.LATENCY;
+import static simblock.settings.NetworkConfiguration.DOWNLOAD_BANDWIDTH;
 import static simblock.settings.NetworkConfiguration.UPLOAD_BANDWIDTH;
+import static simblock.settings.NetworkConfiguration.REGION_DISTRIBUTION;
+import static simblock.settings.NetworkConfiguration.DEGREE_DISTRIBUTION;
 import static simblock.simulator.Main.STATIC_JSON_FILE;
 import static simblock.simulator.Main.random;
 
