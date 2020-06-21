@@ -27,10 +27,14 @@ public class NetworkConfiguration {
   /**
    * Regions where nodes can exist.
    */
-  public static final List<String> REGION_LIST = new ArrayList<>(
-      Arrays.asList("NORTH_AMERICA", "EUROPE", "SOUTH_AMERICA", "ASIA_PACIFIC", "JAPAN",
-                    "AUSTRALIA"
-      ));
+  public static final List<String> REGION_LIST = new ArrayList<>(Arrays.asList(
+		  "NORTH_AMERICA",
+		  "EUROPE",
+		  "SOUTH_AMERICA",
+		  "ASIA_PACIFIC",
+		  "JAPAN",
+		  "AUSTRALIA"
+  ));
 
   /**
    * LATENCY[i][j] is average latency from REGION_LIST[i] to REGION_LIST[j]
@@ -67,16 +71,26 @@ public class NetworkConfiguration {
    * bandwidth. (unit: bit per second) for year 2015
    */
   private static final long[] DOWNLOAD_BANDWIDTH_2015 = {
-      25000000, 24000000, 6500000, 10000000,
-      17500000, 14000000, 6 * 1000000
+      25000000,   // North America
+      24000000,   // Europe
+      6500000,    // South America
+      10000000,   // Asia-Pacific
+      17500000,   // Japan
+      14000000,   // Australia
+      6 * 1000000 // Inter-regional
   };
   /**
    * List of download bandwidth assigned to each region, and last element is Inter-regional
    * bandwidth. (unit: bit per second) for year 2019
    */
   private static final long[] DOWNLOAD_BANDWIDTH_2019 = {
-      52000000, 40000000, 18000000, 22800000,
-      22800000, 29900000, 6 * 1000000
+      52000000,   // North America
+      40000000,   // Europe
+      18000000,   // South America
+      22800000,   // Asia-Pacific
+      22800000,   // Japan
+      29900000,   // Australia
+      6 * 1000000 // Inter-regional
   };
 
   /**
@@ -90,16 +104,26 @@ public class NetworkConfiguration {
    * is Inter-regional bandwidth for year 2015
    */
   private static final long[] UPLOAD_BANDWIDTH_2015 = {
-      4700000, 8100000, 1800000, 5300000,
-      3400000, 5200000, 6 * 1000000
+      4700000,    // North America
+      8100000,    // Europe
+      1800000,    // South America
+      5300000,    // Asia-Pacific
+      3400000,    // Japan
+      5200000,    // Australia
+      6 * 1000000 // Inter-regional
   };
   /**
    * List of upload bandwidth assigned to each region. (unit: bit per second), and last element
    * is Inter-regional bandwidth for year 2019
    */
   private static final long[] UPLOAD_BANDWIDTH_2019 = {
-      19200000, 20700000, 5800000, 15700000,
-      10200000, 11300000, 6 * 1000000
+      19200000,    // North America
+      20700000,    // Europe
+      5800000,     // South America
+      15700000,    // Asia-Pacific
+      10200000,    // Japan
+      11300000,    // Australia
+      6 * 1000000  // Inter-regional
   };
 
   /**
@@ -112,16 +136,24 @@ public class NetworkConfiguration {
    * Region distribution Bitcoin 2015.
    */
   private static final double[] REGION_DISTRIBUTION_BITCOIN_2015 = {
-      0.3869, 0.5159, 0.0113,
-      0.0574, 0.0119, 0.0166
+      0.3869, // North America
+      0.5159, // Europe
+      0.0113, // South America
+      0.0574, // Asia-Pacific
+      0.0119, // Japan
+      0.0166  // Australia
   };
 
   /**
    * Region distribution Bitcoin 2019.
    */
   private static final double[] REGION_DISTRIBUTION_BITCOIN_2019 = {
-      0.3316, 0.4998, 0.0090,
-      0.1177, 0.0224, 0.0195
+      0.3316, // North America
+      0.4998, // Europe
+      0.0090, // South America
+      0.1177, // Asia-Pacific
+      0.0224, // Japan
+      0.0195  // Australia
   };
 
   /**
@@ -129,7 +161,12 @@ public class NetworkConfiguration {
    */
   //TODO year
   private static final double[] REGION_DISTRIBUTION_LITECOIN = {
-      0.3661, 0.4791, 0.0149, 0.1022, 0.0238, 0.0139
+      0.3661, // North America
+      0.4791, // Europe
+      0.0149, // South America
+      0.1022, // Asia-Pacific
+      0.0238, // Japan
+      0.0139  // Australia
   };
 
   /**
@@ -137,7 +174,12 @@ public class NetworkConfiguration {
    */
   //TODO year
   private static final double[] REGION_DISTRIBUTION_DOGECOIN = {
-      0.3924, 0.4879, 0.0212, 0.0697, 0.0106, 0.0182
+      0.3924, // North America
+      0.4879, // Europe
+      0.0212, // South America
+      0.0697, // Asia-Pacific
+      0.0106, // Japan
+      0.0182  // Australia
   };
 
   /**
@@ -150,8 +192,8 @@ public class NetworkConfiguration {
    * The cumulative distribution of number of outbound links for Bitcoin 2015.
    */
   private static final double[] DEGREE_DISTRIBUTION_BITCOIN_2015 = {
-      0.025, 0.050, 0.075, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.85, 0.90, 0.95, 0.97,
-      0.97, 0.98, 0.99, 0.995, 1.0
+      0.025, 0.05,  0.075, 0.1,  0.2,  0.3,  0.4,  0.5,  0.6,   0.7, //  1-10
+      0.8,   0.85,  0.9,   0.95, 0.97, 0.97, 0.98, 0.99, 0.995, 1    // 11-20
   };
 
   /**
@@ -159,16 +201,16 @@ public class NetworkConfiguration {
    */
   //TODO year
   private static final double[] DEGREE_DISTRIBUTION_LITECOIN = {
-      0.01, 0.02, 0.04, 0.07, 0.09, 0.14, 0.20, 0.28, 0.39, 0.5, 0.6, 0.69, 0.76, 0.81, 0.85, 0.87,
-      0.89, 0.92, 0.93, 1.0
+      0.01, 0.02, 0.04, 0.07, 0.09, 0.14, 0.20, 0.28, 0.39, 0.5, //  1-10
+      0.6,  0.69, 0.76, 0.81, 0.85, 0.87, 0.89, 0.92, 0.93, 1    // 11-20
   };
 
   /**
    * The cumulative distribution of number of outbound links for Dogecoin.
    */
   private static final double[] DEGREE_DISTRIBUTION_DOGECOIN = {
-      0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1.0, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00,
-      1.00, 1.00, 1.00, 1.0
+      0, 0, 0, 0, 0, 0, 0, 1, 1, 1, //  1-10
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1  // 11-20
   };
 
   /**
