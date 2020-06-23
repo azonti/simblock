@@ -20,8 +20,10 @@ import static simblock.simulator.Main.OUT_JSON_FILE;
 import static simblock.simulator.Simulator.getSimulatedNodes;
 import static simblock.simulator.Timer.getCurrentTime;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.ArrayList;
+
 import simblock.node.Node;
 
 /**
@@ -57,7 +59,7 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
    * @return a list of known neighbors
    */
   public ArrayList<Node> getNeighbors() {
-    ArrayList<Node> neighbors = new ArrayList<>();
+    List<Node> neighbors = new ArrayList<>();
     neighbors.addAll(outbound);
     neighbors.addAll(inbound);
     return neighbors;
@@ -71,7 +73,7 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
    */
   //TODO this should be done using the bootstrap node
   public void initTable() {
-    ArrayList<Integer> candidates = new ArrayList<>();
+    List<Integer> candidates = new ArrayList<>();
     for (int i = 0; i < getSimulatedNodes().size(); i++) {
       candidates.add(i);
     }
