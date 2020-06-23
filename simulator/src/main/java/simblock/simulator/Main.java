@@ -17,37 +17,38 @@
 package simblock.simulator;
 
 
-import static simblock.settings.SimulationConfiguration.ALGO;
-import static simblock.settings.SimulationConfiguration.AVERAGE_MINING_POWER;
-import static simblock.settings.SimulationConfiguration.END_BLOCK_HEIGHT;
-import static simblock.settings.SimulationConfiguration.INTERVAL;
 import static simblock.settings.SimulationConfiguration.NUM_OF_NODES;
-import static simblock.settings.SimulationConfiguration.STDEV_OF_MINING_POWER;
 import static simblock.settings.SimulationConfiguration.TABLE;
-import static simblock.simulator.Network.getDegreeDistribution;
+import static simblock.settings.SimulationConfiguration.ALGO;
+import static simblock.settings.SimulationConfiguration.INTERVAL;
+import static simblock.settings.SimulationConfiguration.AVERAGE_MINING_POWER;
+import static simblock.settings.SimulationConfiguration.STDEV_OF_MINING_POWER;
+import static simblock.settings.SimulationConfiguration.END_BLOCK_HEIGHT;
 import static simblock.simulator.Network.getRegionDistribution;
+import static simblock.simulator.Network.getDegreeDistribution;
 import static simblock.simulator.Network.printRegion;
-import static simblock.simulator.Simulator.addNode;
-import static simblock.simulator.Simulator.getSimulatedNodes;
-import static simblock.simulator.Simulator.printAllPropagation;
 import static simblock.simulator.Simulator.setTargetInterval;
+import static simblock.simulator.Simulator.getSimulatedNodes;
+import static simblock.simulator.Simulator.addNode;
+import static simblock.simulator.Simulator.printAllPropagation;
 import static simblock.simulator.Timer.getCurrentTime;
 import static simblock.simulator.Timer.getTask;
 import static simblock.simulator.Timer.runTask;
 
-import java.io.BufferedWriter;
+
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
+import java.io.BufferedWriter;
 import java.io.PrintWriter;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
+import java.util.ArrayList;
 import java.util.Set;
+import java.util.HashSet;
+import java.util.Random;
 import simblock.block.Block;
 import simblock.node.Node;
 import simblock.task.AbstractMintingTask;
