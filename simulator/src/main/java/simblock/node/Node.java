@@ -24,14 +24,15 @@ import static simblock.simulator.Timer.getCurrentTime;
 import static simblock.simulator.Timer.putTask;
 import static simblock.simulator.Timer.removeTask;
 
+import java.util.List;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.HashSet;
 import simblock.block.Block;
-import simblock.node.consensus.AbstractConsensusAlgo;
 import simblock.node.routing.AbstractRoutingTable;
-import simblock.task.AbstractMessageTask;
+import simblock.node.consensus.AbstractConsensusAlgo;
 import simblock.task.AbstractMintingTask;
+import simblock.task.AbstractMessageTask;
 import simblock.task.BlockMessageTask;
 import simblock.task.InvMessageTask;
 import simblock.task.RecMessageTask;
@@ -87,7 +88,7 @@ public class Node {
   private boolean sendingBlock = false;
 
   //TODO
-  private final ArrayList<RecMessageTask> messageQue = new ArrayList<>();
+  private final List<RecMessageTask> messageQue = new ArrayList<>();
   // TODO
   private final Set<Block> downloadingBlocks = new HashSet<>();
 
@@ -212,7 +213,7 @@ public class Node {
    *
    * @return the neighbors
    */
-  public ArrayList<Node> getNeighbors() {
+  public List<Node> getNeighbors() {
     return this.routingTable.getNeighbors();
   }
 
