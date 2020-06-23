@@ -16,7 +16,8 @@
 
 package simblock.node.routing;
 
-import java.util.ArrayList;
+import java.util.List;
+
 import simblock.node.Node;
 
 /**
@@ -72,7 +73,7 @@ public abstract class AbstractRoutingTable {
    *
    * @return the neighbors
    */
-  public abstract ArrayList<Node> getNeighbors();
+  public abstract List<Node> getNeighbors();
 
   /**
    * Add a neighbor to the list of neighbors.

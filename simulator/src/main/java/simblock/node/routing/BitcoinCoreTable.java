@@ -36,12 +36,12 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
   /**
    * The list of outbound connections.
    */
-  private final ArrayList<Node> outbound = new ArrayList<>();
+  private final List<Node> outbound = new ArrayList<>();
 
   /**
    * The list of inbound connections.
    */
-  private final ArrayList<Node> inbound = new ArrayList<>();
+  private final List<Node> inbound = new ArrayList<>();
 
   /**
    * Instantiates a new Bitcoin core table.
@@ -58,7 +58,7 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
    *
    * @return a list of known neighbors
    */
-  public ArrayList<Node> getNeighbors() {
+  public List<Node> getNeighbors() {
     List<Node> neighbors = new ArrayList<>();
     neighbors.addAll(outbound);
     neighbors.addAll(inbound);
