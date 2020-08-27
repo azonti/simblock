@@ -51,7 +51,6 @@ public class SampleProofOfStake extends AbstractConsensusAlgo {
     );
   }
 
-  @SuppressWarnings("CheckStyle")
   @Override
   public boolean isReceivedBlockValid(Block receivedBlock, Block currentBlock) {
     if (!(receivedBlock instanceof SamplePoSBlock)) {

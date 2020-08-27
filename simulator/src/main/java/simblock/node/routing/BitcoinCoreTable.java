@@ -23,6 +23,8 @@ import static simblock.simulator.Timer.getCurrentTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 import simblock.node.Node;
 
@@ -30,7 +32,6 @@ import simblock.node.Node;
  * The implementation of the {@link AbstractRoutingTable} representing the Bitcoin core routing
  * table.
  */
-@SuppressWarnings("unused")
 public class BitcoinCoreTable extends AbstractRoutingTable {
 
   /**
@@ -78,12 +79,12 @@ public class BitcoinCoreTable extends AbstractRoutingTable {
       candidates.add(i);
     }
     Collections.shuffle(candidates);
+    Set<List<Byte>> alreadyConnectedGroupSet = new HashSet<List<Byte>>();
     for (int candidate : candidates) {
-      if (this.outbound.size() < this.getNumConnection()) {
-        this.addNeighbor(getSimulatedNodes().get(candidate));
-      } else {
-        break;
-      }
+      if (this.outbound.size() >= this.getNumConnection()) break;
+      Node them = getSimulatedNodes().get(candidate);
+      if (alreadyConnectedGroupSet.contains(them.getNodeGroup())) continue;
+      if (this.addNeighbor(them)) alreadyConnectedGroupSet.add(them.getNodeGroup());
     }
   }
 

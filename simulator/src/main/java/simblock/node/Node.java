@@ -65,6 +65,8 @@ public class Node {
    * The consensus algorithm used by the node.
    */
   private AbstractConsensusAlgo consensusAlgo;
+  
+  private List<Byte> nodeGroup;
 
   /**
    * The current block.
@@ -157,7 +159,6 @@ public class Node {
    *
    * @return the consensus algorithm. See {@link AbstractConsensusAlgo}
    */
-  @SuppressWarnings("unused")
   public AbstractConsensusAlgo getConsensusAlgo() {
     return this.consensusAlgo;
   }
@@ -169,6 +170,14 @@ public class Node {
    */
   public AbstractRoutingTable getRoutingTable() {
     return this.routingTable;
+  }
+  
+  public List<Byte> getNodeGroup() {
+	return this.nodeGroup;
+  }
+  
+  public void setNodeGroup(List<Byte> nodeGroup) {
+	this.nodeGroup = nodeGroup;
   }
 
   /**
@@ -194,7 +203,6 @@ public class Node {
    *
    * @return the number of connection
    */
-  @SuppressWarnings("unused")
   public int getNumConnection() {
     return this.routingTable.getNumConnection();
   }
@@ -223,7 +231,6 @@ public class Node {
    * @param node the node to be added as a neighbor
    * @return the success state of the operation
    */
-  @SuppressWarnings("UnusedReturnValue")
   public boolean addNeighbor(Node node) {
     return this.routingTable.addNeighbor(node);
   }
@@ -234,7 +241,6 @@ public class Node {
    * @param node the node to be removed as a neighbor
    * @return the success state of the operation
    */
-  @SuppressWarnings("unused")
   public boolean removeNeighbor(Node node) {
     return this.routingTable.removeNeighbor(node);
   }

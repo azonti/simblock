@@ -37,7 +37,9 @@ import static simblock.simulator.Timer.runTask;
 
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
@@ -84,6 +86,8 @@ public class Main {
       e.printStackTrace();
     }
   }
+  
+  public static BufferedReader NODES_TXT_FILE;
 
   /**
    * The output writer.
@@ -99,6 +103,7 @@ public class Main {
 
   static {
     try {
+      NODES_TXT_FILE = new BufferedReader(new FileReader(new File(CONF_FILE_URI.resolve("./nodes.txt"))));
       OUT_JSON_FILE = new PrintWriter(
           new BufferedWriter(new FileWriter(new File(OUT_FILE_URI.resolve("./output.json")))));
       STATIC_JSON_FILE = new PrintWriter(
@@ -316,6 +321,43 @@ public class Main {
     double[] degreeDistribution = getDegreeDistribution();
     List<Integer> degreeList = makeRandomList(degreeDistribution, true);
 
+    numNodes = 0;
+    List<List<Byte>> nodeGroup0List = new ArrayList<List<Byte>>();
+    List<List<Byte>> nodeGroup1List = new ArrayList<List<Byte>>();
+    regionList = new ArrayList<Integer>();
+
+	try {
+		while (true) {
+			String line = NODES_TXT_FILE.readLine();
+			if (line == null) break;
+			
+			String[] params;
+			params = line.split(" ");
+			
+			numNodes++;
+			
+			List<Byte> nodeGroup0 = new ArrayList<Byte>();
+			for (int i = 0; i < params[0].length(); i += 2) {
+				int byt = Integer.parseInt(params[0].substring(i, i + 2), 16);
+				if (byt > 0x7F) byt -= 0x100;
+				nodeGroup0.add((byte)byt);
+			}
+			nodeGroup0List.add(nodeGroup0);
+
+			List<Byte> nodeGroup1 = new ArrayList<Byte>();
+			for (int i = 0; i < params[1].length(); i += 2) {
+				int byt = Integer.parseInt(params[1].substring(i, i + 2), 16);
+				if (byt > 0x7F) byt -= 0x100;
+				nodeGroup1.add((byte)byt);
+			}
+			nodeGroup1List.add(nodeGroup1);
+			
+			regionList.add(Integer.parseInt(params[2]));
+		}
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+    
     for (int id = 1; id <= numNodes; id++) {
       // Each node gets assigned a region, its degree, mining power, routing table and
       // consensus algorithm
@@ -323,6 +365,8 @@ public class Main {
           id, degreeList.get(id - 1) + 1, regionList.get(id - 1), genMiningPower(), TABLE,
           ALGO
       );
+      node.setNodeGroup(nodeGroup0List.get(id - 1));
+      System.out.println(node.getNodeGroup());
       // Add the node to the list of simulated nodes
       addNode(node);
 

@@ -197,6 +197,7 @@ public class NetworkConfiguration {
   /**
    * The cumulative distribution of number of outbound links for Bitcoin 2015.
    */
+  @SuppressWarnings("unused")
   private static final double[] DEGREE_DISTRIBUTION_BITCOIN_2015 = {
       0.025, 0.05,  0.075, 0.1,  0.2,  0.3,  0.4,  0.5,  0.6,   0.7, //  1-10
       0.8,   0.85,  0.9,   0.95, 0.97, 0.97, 0.98, 0.99, 0.995, 1    // 11-20
@@ -215,7 +216,6 @@ public class NetworkConfiguration {
   /**
    * The cumulative distribution of number of outbound links for Dogecoin.
    */
-  @SuppressWarnings("unused")
   private static final double[] DEGREE_DISTRIBUTION_DOGECOIN = {
       0, 0, 0, 0, 0, 0, 0, 1, 1, 1, //  1-10
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1  // 11-20
@@ -225,5 +225,5 @@ public class NetworkConfiguration {
    * The cumulative distribution of number of outbound links. Cf. Andrew Miller et al.,
    * "Discovering bitcoin's public topology and influential nodes", 2015.
    */
-  public static final double[] DEGREE_DISTRIBUTION = DEGREE_DISTRIBUTION_BITCOIN_2015;
+  public static final double[] DEGREE_DISTRIBUTION = DEGREE_DISTRIBUTION_DOGECOIN;
 }
