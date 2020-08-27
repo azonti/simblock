@@ -186,7 +186,7 @@ public class Main {
     // Record orphans to the list of all known blocks
     blocks.addAll(orphans);
 
-    ArrayList<Block> blockList = new ArrayList<>(blocks);
+    List<Block> blockList = new ArrayList<>(blocks);
 
     //Sort the blocks first by time, then by hash code
     blockList.sort((a, b) -> {
@@ -266,8 +266,8 @@ public class Main {
    * @return array list
    */
   //TODO explanation on facum etc.
-  public static ArrayList<Integer> makeRandomListFollowDistribution(double[] distribution, boolean facum) {
-    ArrayList<Integer> list = new ArrayList<>();
+  public static List<Integer> makeRandomListFollowDistribution(double[] distribution, boolean facum) {
+    List<Integer> list = new ArrayList<>();
     int index = 0;
 
     if (facum) {
@@ -302,8 +302,8 @@ public class Main {
    * @param rate the rate of true
    * @return array list
    */
-  public static ArrayList<Boolean> makeRandomList(float rate){
-		ArrayList<Boolean> list = new ArrayList<Boolean>();
+  public static List<Boolean> makeRandomList(float rate){
+		List<Boolean> list = new ArrayList<Boolean>();
 		for(int i=0; i < NUM_OF_NODES; i++){
 			list.add(i < NUM_OF_NODES*rate);
 		}
@@ -342,7 +342,7 @@ public class Main {
     List<Boolean> useCBRNodes = makeRandomList(CBR_USAGE_RATE);
 
     // List of churn nodes.
-		List<Boolean> churnNodes = makeRandomList(CHURN_NODE_RATE);
+	List<Boolean> churnNodes = makeRandomList(CHURN_NODE_RATE);
 
     numNodes = 0;
     List<List<Byte>> nodeGroup0List = new ArrayList<List<Byte>>();

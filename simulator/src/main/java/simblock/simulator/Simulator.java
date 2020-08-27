@@ -18,9 +18,10 @@ package simblock.simulator;
 
 import static simblock.simulator.Timer.getCurrentTime;
 
+import java.util.List;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.LinkedHashMap;
 import simblock.block.Block;
 import simblock.node.Node;
 
@@ -34,7 +35,7 @@ public class Simulator {
   /**
    * A list of nodes that will be used in a simulation.
    */
-  private static final ArrayList<Node> simulatedNodes = new ArrayList<>();
+  private static final List<Node> simulatedNodes = new ArrayList<>();
 
   /**
    * The target block interval in milliseconds.
@@ -46,7 +47,7 @@ public class Simulator {
    *
    * @return the array list
    */
-  public static ArrayList<Node> getSimulatedNodes() {
+  public static List<Node> getSimulatedNodes() {
     return simulatedNodes;
   }
 
@@ -106,7 +107,7 @@ public class Simulator {
   /**
    * A list of observed {@link Block} instances.
    */
-  private static final ArrayList<Block> observedBlocks = new ArrayList<>();
+  private static final List<Block> observedBlocks = new ArrayList<>();
 
   /**
    * A list of observed block propagation times. The map key represents the id of the node that
@@ -115,7 +116,7 @@ public class Simulator {
    * time, effectively
    * recording the absolute time it took for a node to witness the block.
    */
-  private static final ArrayList<LinkedHashMap<Integer, Long>> observedPropagations =
+  private static final List<LinkedHashMap<Integer, Long>> observedPropagations =
       new ArrayList<>();
 
   /**
